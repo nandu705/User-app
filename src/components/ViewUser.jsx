@@ -1,58 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserNavbar from './UserNavbar'
+import axios from 'axios'
 
 const ViewUser = () => {
+  const [userData, setUserData] = useState([])
 
-    const [userData, ChangesuseData] = useState([
-        {"ID":"111","NAME":"SONA","USERNAME":"sona","PHNO":"13456890"},
-        {"ID":"112","NAME":"SANA","USERNAME":"sana","PHNO":"12456890"},
-        {"ID":"113","NAME":"SOYA","USERNAME":"soya","PHNO":"13456880"},
-        {"ID":"119","NAME":"SIYA","USERNAME":"siya","PHNO":"13456890"},
-        {"ID":"120","NAME":"SENA","USERNAME":"sena","PHNO":"13455890"}
+  const fetchData = () => {
+    axios.get("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        setUserData(response.data)
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error)
+      })
+  }
 
-    ])
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <div>
-        <UserNavbar/>
-        <div className="container">
-            <div className="row">
-                <div className="col col-12 col-sm-12 col-md-12 col-lg-12 colxl-12 col-xxl-12">
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">ID</th>
-      <th scope="col">NAME</th>
-      <th scope="col">USERNAME</th>
-        <th scope="col">PHNO</th>
-
-
-    </tr>
-  </thead>
-  <tbody>
-    {userData.map(
-        (value,index)=>{
-            return (
+      <UserNavbar />
+      <div className="container">
+        <div className="row">
+          <h3>VIEW USER</h3>
+          <div className="col-12">
+            <table className="table table-bordered">
+              <thead>
                 <tr>
-      <th scope="row">1</th>
-      <td>{value.ID}</td>
-      <td>{value.NAME}</td>
-      <td>{value.USERNAME}</td>
-        <td>{value.PHNO}</td>
-
-
-    </tr>
-            )
-        }
-    )}
-
-
-  </tbody>
-</table>
-                </div>
-            </div>
+                  <th scope="col">ID</th>
+                  <th scope="col">NAME</th>
+                  <th scope="col">EMAIL</th>
+                  <th scope="col">PHONE</th>
+                  <th scope="col">WEBSITE</th>
+                  <th scope="col">COMPANY</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userData.map((value) => (
+                  <tr key={value.id}>
+                    <td>{value.id}</td>
+                    <td>{value.name}</td>
+                    <td>{value.email}</td>
+                    <td>{value.phone}</td>
+                    <td>{value.website}</td>
+                    <td>{value.company?.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
   )
 }
